@@ -4556,7 +4556,7 @@ static int parse_port_string(const struct vec *vec, struct socket *so) {
   memset(so, 0, sizeof(*so));
   so->lsa.sin.sin_family = AF_INET;
 
-  if (sscanf(vec->ptr, "%u.%u.%u.%u:%u%n", &a, &b, &c, &d, &port, &len) == 5) {
+  if (sscanf(vec->ptr, "%u.%u.%u.%u:%u%u", &a, &b, &c, &d, &port, &len) == 5) {
     // Bind to a specific IPv4 address, e.g. 192.168.1.5:8080
     so->lsa.sin.sin_addr.s_addr = htonl((a << 24) | (b << 16) | (c << 8) | d);
     so->lsa.sin.sin_port = htons((uint16_t) port);
@@ -4568,7 +4568,7 @@ static int parse_port_string(const struct vec *vec, struct socket *so) {
     so->lsa.sin6.sin6_family = AF_INET6;
     so->lsa.sin6.sin6_port = htons((uint16_t) port);
 #endif
-  } else if (sscanf(vec->ptr, "%u%n", &port, &len) == 1) {
+  } else if (sscanf(vec->ptr, "%u%u", &port, &len) == 1) {
     // If only port is specified, bind to IPv4, INADDR_ANY
     so->lsa.sin.sin_port = htons((uint16_t) port);
   } else {

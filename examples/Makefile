@@ -1,4 +1,4 @@
-CFLAGS  = -W -Wall -I.. -pthread -g -pipe $(COPT)
+CFLAGS  = -W -Wall -I.. -pthread -g -pipe $(COPT) -Wl,--no-as-needed
 DLL_FLAGS = -DLUA_COMPAT_ALL -I../lua-5.2.1/src
 
 ifeq ($(OS),Windows_NT)
@@ -34,7 +34,7 @@ chat:
 	$(CC) $(CFLAGS) chat.c ../mongoose.c -o $@
 
 lua_dll:
-	$(CC) $(CFLAGS) $(DLL_FLAGS) lua_dll.c -o $@.so
+	$(CC) $(CFLAGS) $(DLL_FLAGS) lua_dll.c -fPIC -o $@.so
 
 
 MSVC    = ../../vc6
