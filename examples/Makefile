@@ -1,4 +1,4 @@
-CFLAGS  = -W -Wall -I.. -pthread -g -pipe $(COPT) -Wl,--no-as-needed
+CFLAGS  = -W -Wall -I.. -pthread -g -pipe $(COPT)
 DLL_FLAGS = -DLUA_COMPAT_ALL -I../lua-5.2.1/src
 
 ifeq ($(OS),Windows_NT)
@@ -7,7 +7,7 @@ else
   DLL_FLAGS += -shared
 
   ifeq ($(UNAME_S),Linux)
-    CFLAGS += -ldl
+    LDFLAGS += -ldl
   endif
 
   ifeq ($(UNAME_S),Darwin)
@@ -19,19 +19,19 @@ endif
 all: hello upload post websocket chat lua_dll
 
 hello:
-	$(CC) $(CFLAGS) hello.c ../mongoose.c  -o $@
+	$(CC) $(CFLAGS) hello.c ../mongoose.c $(LDFLAGS) -o $@
 
 upload:
-	$(CC) $(CFLAGS) upload.c ../mongoose.c -o $@
+	$(CC) $(CFLAGS) upload.c ../mongoose.c $(LDFLAGS) -o $@
 
 post:
-	$(CC) $(CFLAGS) post.c ../mongoose.c -o $@
+	$(CC) $(CFLAGS) post.c ../mongoose.c $(LDFLAGS) -o $@
 
 websocket:
-	$(CC) $(CFLAGS) -DUSE_WEBSOCKET websocket.c ../mongoose.c -o $@
+	$(CC) $(CFLAGS) -DUSE_WEBSOCKET websocket.c ../mongoose.c $(LDFLAGS) -o $@
 
 chat:
-	$(CC) $(CFLAGS) chat.c ../mongoose.c -o $@
+	$(CC) $(CFLAGS) chat.c ../mongoose.c $(LDFLAGS) -o $@
 
 lua_dll:
 	$(CC) $(CFLAGS) $(DLL_FLAGS) lua_dll.c -fPIC -o $@.so
